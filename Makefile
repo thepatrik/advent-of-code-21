@@ -1,6 +1,10 @@
 .DEFAULT_GOAL:= all
 
-all: 12 13
+all: 11 12 13
+
+.PHONY: 11
+11:
+	cd go/eleven && go test -v
 
 .PHONY: 12
 12:
