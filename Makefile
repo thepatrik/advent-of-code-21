@@ -1,6 +1,6 @@
 .DEFAULT_GOAL:= all
 
-all: 1 2 3 4 5 6 7 8 9 10 11 12 13
+all: 1 2 3 4 5 6 7 8 9 10 11 12 13 14
 
 .PHONY: 1
 1:
@@ -53,3 +53,7 @@ all: 1 2 3 4 5 6 7 8 9 10 11 12 13
 .PHONY: 13
 13:
 	cd go/thirteen && go test -v
+
+.PHONY: 14
+14:
+	cd go/fourteen && go test -v
