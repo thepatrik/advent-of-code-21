@@ -2,7 +2,6 @@ package parser
 
 import (
 	"bufio"
-	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -37,14 +36,9 @@ func ReadFile(name string) []string {
 	defer f.Close()
 
 	strslice := make([]string, 0)
-	rd := bufio.NewReader(f)
-	for {
-		line, err := rd.ReadString('\n')
-
-		if err == io.EOF {
-			break
-		}
-		line = strings.TrimSuffix(line, "\n")
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		line := scanner.Text()
 		strslice = append(strslice, line)
 	}
 	return strslice
