@@ -1,6 +1,6 @@
 .DEFAULT_GOAL:= all
 
-all: 1 2 3 4 5 7 8 9 10 11 12 13
+all: 1 2 3 4 5 6 7 8 9 10 11 12 13
 
 .PHONY: 1
 1:
@@ -21,6 +21,10 @@ all: 1 2 3 4 5 7 8 9 10 11 12 13
 .PHONY: 5
 5:
 	cd rust && cargo test --release --bin 5
+
+.PHONY: 6
+6:
+	cd rust && cargo test --release --bin 6
 
 .PHONY: 7
 7:
