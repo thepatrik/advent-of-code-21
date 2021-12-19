@@ -1,6 +1,10 @@
 .DEFAULT_GOAL:= all
 
-all: 8 9 10 11 12 13
+all: 7 8 9 10 11 12 13
+
+.PHONY: 7
+7:
+	cd rust && cargo test --release --bin 7
 
 .PHONY: 8
 8:
