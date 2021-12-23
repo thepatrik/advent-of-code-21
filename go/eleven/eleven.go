@@ -1,38 +1,9 @@
 package eleven
 
-import "github.com/thepatrik/advent-of-code-21/go/pkg/parser"
-
-var (
-	adjacents = []Pos{
-		{x: 0, y: -1},
-		{x: 0, y: 1},
-		{x: 1, y: 1},
-		{x: 1, y: 0},
-		{x: 1, y: -1},
-		{x: -1, y: 1},
-		{x: -1, y: 0},
-		{x: -1, y: -1},
-	}
+import (
+	"github.com/thepatrik/advent-of-code-21/go/pkg/matrix"
+	"github.com/thepatrik/advent-of-code-21/go/pkg/parser"
 )
-
-type Pos struct {
-	x int
-	y int
-}
-
-type octopi [][]int
-
-func (octopi octopi) Neighbours(p Pos) []Pos {
-	neighbours := make([]Pos, 0)
-	w, h := len(octopi), len(octopi[p.x])
-	for _, adjacent := range adjacents {
-		neighbour := Pos{x: p.x + adjacent.x, y: p.y + adjacent.y}
-		if neighbour.x >= 0 && neighbour.x < w && neighbour.y >= 0 && neighbour.y < h {
-			neighbours = append(neighbours, neighbour)
-		}
-	}
-	return neighbours
-}
 
 func PartOne(filename string) int {
 	octopi := parse(filename)
@@ -58,15 +29,15 @@ func PartTwo(filename string) int {
 	}
 }
 
-func step(octopi octopi) map[Pos]bool {
-	flashmap := make(map[Pos]bool)
+func step(octopi matrix.Matrix) map[matrix.Pos]bool {
+	flashmap := make(map[matrix.Pos]bool)
 
 	for y := 0; y < len(octopi); y++ {
 		for x := 0; x < len(octopi[y]); x++ {
-			pos := Pos{x: x, y: y}
+			pos := matrix.Pos{X: x, Y: y}
 			if !flashmap[pos] {
-				octopi[pos.x][pos.y] += 1
-				if octopi[pos.x][pos.y] == 10 {
+				octopi[pos.X][pos.Y] += 1
+				if octopi[pos.X][pos.Y] == 10 {
 					flash(octopi, pos, flashmap)
 				}
 			}
@@ -76,23 +47,23 @@ func step(octopi octopi) map[Pos]bool {
 	return flashmap
 }
 
-func flash(octopi octopi, pos Pos, flashmap map[Pos]bool) {
+func flash(octopi matrix.Matrix, pos matrix.Pos, flashmap map[matrix.Pos]bool) {
 	flashmap[pos] = true
-	octopi[pos.x][pos.y] = 0
+	octopi[pos.X][pos.Y] = 0
 
-	for _, neighbour := range octopi.Neighbours(pos) {
+	for _, neighbour := range octopi.Neighbours(pos, true) {
 		if !flashmap[neighbour] {
-			octopi[neighbour.x][neighbour.y] += 1
-			if octopi[neighbour.x][neighbour.y] == 10 {
+			octopi[neighbour.X][neighbour.Y] += 1
+			if octopi[neighbour.X][neighbour.Y] == 10 {
 				flash(octopi, neighbour, flashmap)
 			}
 		}
 	}
 }
 
-func parse(filename string) octopi {
+func parse(filename string) matrix.Matrix {
 	strslice := parser.ReadFile(filename)
-	octopi := make(octopi, 0)
+	octopi := make(matrix.Matrix, 0)
 	for _, line := range strslice {
 		row := make([]int, 0)
 		for _, c := range line {
